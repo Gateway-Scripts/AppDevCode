@@ -1,0 +1,32 @@
+    private Patient _patient;
+
+public ObservableCollection<ROIViewModel> ROIAnalyses { get; private set; }
+public AnalysisViewModel(Patient patient,IEventAggregator eventAggregator)
+{
+    _patient = patient;
+    ROIAnalyses = new ObservableCollection<ROIViewModel>();
+    eventAggregator.GetEvent<PDImageSelectedEvent>().Subscribe(OnSetAnalyses);
+}
+
+private void OnSetAnalyses(PDImageModel model)
+{
+    ROIAnalyses.Clear();
+    var pdPlan = _patient.PDPlanSetups
+        .FirstOrDefault(ps => ps.Id.Equals(model.PDPlan.PlanId) && ps.PlanSetup.Course.Id.Equals(model.PDPlan.CourseId));
+    var pdBeam = pdPlan.Beams.FirstOrDefault(b => b.Id.Equals(model.FieldId));
+    var predictedImage = pdBeam.PredictedDoseImage;
+    var portalImage = pdBeam.PortalDoseImages
+        .FirstOrDefault(pdi => pdi.Id.Equals(model.ImageId) && pdi.Image.CreationDateTime == model.CreationDate);
+    var rois = new List<ROIType> { ROIType.None, ROIType.Field, ROIType.CIAO };
+    PDAnalysisService.PDImage = portalImage;
+    PDAnalysisService.PredictedImage = predictedImage;
+    foreach (var roi in rois)
+    {
+        ROIViewModel roivm = new ROIViewModel(roi);
+       for(double dd = 1; dd <= 4; dd++)
+        {
+            roivm.AddGammaValue(dd);
+        }
+        ROIAnalyses.Add(roivm);
+    }
+}

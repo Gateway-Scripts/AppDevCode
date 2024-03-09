@@ -1,0 +1,73 @@
+public List<PDPlanModel> PDPlans { get; set; }
+private PDPlanModel _selectedPDPlan;
+
+public PDPlanModel SelectedPDPlan
+{
+	get { return _selectedPDPlan; }
+	set 
+    { 
+        SetProperty(ref _selectedPDPlan,value);
+        SetPDImages();
+    }
+}
+
+public ObservableCollection<PDImageModel> PDImages { get; set; }
+private PDImageModel _selectedPDImage;
+private Patient _patient;
+private IEventAggregator _eventAggregator;
+
+public PDImageModel SelectedPDImage
+{
+	get { return _selectedPDImage; }
+	set 
+    { 
+        SetProperty(ref _selectedPDImage,value);
+        if (SelectedPDImage != null)
+        {
+            _eventAggregator.GetEvent<PDImageSelectedEvent>().Publish(SelectedPDImage);
+        }
+    }
+}
+public NavigationViewModel(Patient patient, IEventAggregator eventAggregator)
+{
+    _patient = patient;
+    _eventAggregator = eventAggregator;
+    PDPlans = new List<PDPlanModel>();
+    PDImages = new ObservableCollection<PDImageModel>();
+    SetPDPlans();
+}
+
+private void SetPDPlans()
+{
+    foreach(var plan in _patient.PDPlanSetups)
+    {
+        PDPlanModel planModel = new PDPlanModel();
+        planModel.PlanId = plan.Id;
+        planModel.CourseId = plan.PlanSetup.Course.Id;
+        planModel.PatientId = _patient.Id;
+        //add images
+        foreach(var beam in plan.Beams)
+        {
+            foreach(var image in beam.PortalDoseImages)
+            {
+                PDImageModel imageModel = new PDImageModel();
+                imageModel.FieldId = beam.Id;
+                imageModel.ImageId = image.Id;
+                imageModel.ImageDate = ((DateTime)image.Image.CreationDateTime).ToString();
+                imageModel.PDPlan = planModel;
+                imageModel.CreationDate = (DateTime)image.Image.CreationDateTime;
+                planModel.Images.Add(imageModel);
+            }
+        }
+        PDPlans.Add(planModel);
+    }
+}
+
+private void SetPDImages()
+{
+    PDImages.Clear();
+    foreach(var pdimage in SelectedPDPlan.Images)
+    {
+        PDImages.Add(pdimage);
+    }
+}

@@ -1,0 +1,15 @@
+ public static Patient PDPatient;
+ public static PortalDoseImage PDImage;
+ public static DoseImage PredictedImage;
+ public static PDAnalysis CreateAnalysis(ROIType roi, double doseDifference, double dta)
+ {
+     var pdTemplate = new PDTemplate(false, false, false, false,
+         AnalysisMode.CU, NormalizationMethod.Unknown, false, 0.0, roi,
+         10, doseDifference, dta, false,
+         new List<EvaluationTestDesc>
+         {
+             new EvaluationTestDesc(EvaluationTestKind.GammaAreaLessThanOne,0.0,0.95,true)
+         });
+     var pdAnalysis = PDImage.CreateTransientAnalysis(pdTemplate, PredictedImage);
+     return pdAnalysis;
+ }

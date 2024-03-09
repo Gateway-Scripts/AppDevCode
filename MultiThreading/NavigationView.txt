@@ -1,0 +1,37 @@
+<Grid.RowDefinitions>
+    <RowDefinition Height="Auto"/>
+    <RowDefinition Height="*"/>
+    <RowDefinition Height="Auto"/>
+    <RowDefinition Height="*"/>
+</Grid.RowDefinitions>
+    <TextBlock Text="Plans" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+    <ListView ItemsSource="{Binding PDPlans}" SelectedItem="{Binding SelectedPDPlan}" 
+              Grid.Row="1" Margin="20,0,0,0">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+            <TextBlock>
+                <Run Text="{Binding PlanId}"/>
+                <Run Text="("/>
+                <Run Text="{Binding CourseId}"/>
+                <Run Text=")"/>
+            </TextBlock>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+<TextBlock Text="Images" FontWeight="Bold" Grid.Row="2" HorizontalAlignment="Center" 
+           Margin="0,10,0,0"/>
+<ListView ItemsSource="{Binding PDImages}" SelectedItem="{Binding SelectedPDImage}" 
+          Grid.Row="3" Margin="20,0,0,0">
+    <ListView.ItemTemplate>
+        <DataTemplate>
+            <TextBlock>
+                <Run Text="{Binding ImageId}"/>
+                <Run Text="("/>
+                <Run Text="{Binding FieldId}"/>
+                <Run Text=")"/>
+                <LineBreak/>
+                <Run Text="{Binding ImageDate}" FontStyle="Italic" FontSize="10"/>
+            </TextBlock>
+        </DataTemplate>
+    </ListView.ItemTemplate>
+</ListView>

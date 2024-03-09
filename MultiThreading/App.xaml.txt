@@ -1,0 +1,19 @@
+try
+{
+    _patientId = "PD-HN-001";
+    using (pdsapi.Application pdApp = pdsapi.Application.CreateApplication())
+    {
+        VMS.DV.PD.UI.Base.VTransientImageDataMgr.CreateInstance(true);
+        pdsapi.Patient patient = pdApp.OpenPatientById(_patientId);
+        var bootstrapper = new Bootstrapper();
+        var container = bootstrapper.Bootstrap(patient);
+        var mainView = container.Resolve<MainView>();
+        var mainViewModel = container.Resolve<MainViewModel>();
+        mainView.DataContext = mainViewModel;
+        mainView.ShowDialog();
+    }
+}
+catch (Exception ex)
+{
+    //TODO: output exception to user or logs. 
+}

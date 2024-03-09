@@ -1,0 +1,54 @@
+ <Grid.RowDefinitions>
+     <RowDefinition Height="Auto"/>
+     <RowDefinition Height="Auto"/>
+     <RowDefinition Height="*"/>
+ </Grid.RowDefinitions>
+ <TextBlock FontWeight="Bold" HorizontalAlignment="Center">
+     <Run Text="{Binding ROIName}"/>
+     <Run Text=" + 1cm"/>
+ </TextBlock>
+           
+ <Grid Grid.Row="1" Margin="20,0,20,0">
+     <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="*"/>
+         <ColumnDefinition Width="*"/>
+         <ColumnDefinition Width="*"/>
+         <ColumnDefinition Width="*"/>
+         <ColumnDefinition Width="*"/>
+     </Grid.ColumnDefinitions>
+     <Border BorderBrush="Black" BorderThickness="0,0,0,2" Grid.ColumnSpan="5"/>
+     <TextBlock FontWeight="Bold" HorizontalAlignment="Center">
+        <Run Text="DTA [mm]"/>
+         <LineBreak/>
+         <Run Text="DD [%]"/>
+     </TextBlock>
+     <TextBlock Text="1mm" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Center"/>
+     <TextBlock Text="2mm" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center"/>
+     <TextBlock Text="3mm" FontWeight="Bold" Grid.Column="3" HorizontalAlignment="Center"/>
+     <TextBlock Text="4mm" FontWeight="Bold" Grid.Column="4" HorizontalAlignment="Center"/>
+ </Grid>
+ <ItemsControl ItemsSource="{Binding GammaValues}" Margin="20,0,20,0" Grid.Row="2">
+     <ItemsControl.ItemTemplate>
+         <DataTemplate>
+             <Grid>
+                 <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="*"/>
+                 </Grid.ColumnDefinitions>
+                 <Border BorderBrush="Black" BorderThickness="0,0,1,1">
+                 <TextBlock Text="{Binding DD}" FontWeight="Bold" 
+                            HorizontalAlignment="Center"/>
+                 </Border>
+                 <Border Grid.Column="1" Grid.ColumnSpan="4" BorderBrush="Black" 
+                         BorderThickness="0,0,0,1"/>
+                 <TextBlock Text="{Binding DTA1}" Grid.Column="1"/>
+                 <TextBlock Text="{Binding DTA2}" Grid.Column="2"/>
+                 <TextBlock Text="{Binding DTA3}" Grid.Column="3"/>
+                 <TextBlock Text="{Binding DTA4}" Grid.Column="4"/>
+             </Grid>
+         </DataTemplate>
+     </ItemsControl.ItemTemplate>
+ </ItemsControl>

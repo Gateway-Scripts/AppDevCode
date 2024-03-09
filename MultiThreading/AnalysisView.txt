@@ -1,0 +1,7 @@
+ <ItemsControl ItemsSource="{Binding ROIAnalyses}">
+     <ItemsControl.ItemTemplate>
+         <DataTemplate>
+             <local:ROIView DataContext="{Binding Path=.}"/>
+         </DataTemplate>
+     </ItemsControl.ItemTemplate>
+ </ItemsControl>

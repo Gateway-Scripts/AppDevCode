@@ -1,0 +1,20 @@
+public string PlanID { get; set; }
+public string CourseID { get; set; }
+public string PlanRx { get; set; }
+public string ApprovalStatus { get; set; }
+public string Approver { get; set; }
+public PlanModel(PlanSetup planSetup)
+
+{
+
+    PlanID = planSetup.Id;
+
+    CourseID = planSetup.Course.Id;
+
+    PlanRx = $"{planSetup.TotalDose} in {planSetup.NumberOfFractions} fractions";
+
+    ApprovalStatus = planSetup.ApprovalStatus.ToString();
+
+    Approver = planSetup.ApprovalHistory.OrderBy(ah => ah.ApprovalDateTime).Last().UserDisplayName;
+
+}

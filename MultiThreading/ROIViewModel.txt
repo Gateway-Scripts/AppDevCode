@@ -1,0 +1,39 @@
+ private ROIType _roi;
+
+ public string ROIName { get; set; }
+
+ private double _dta;
+
+ public ObservableCollection<GammaValueModel> GammaValues { get; set; }
+ public ROIViewModel(ROIType roi)
+ {
+     _roi = roi;
+     ROIName = roi.ToString();
+     GammaValues = new ObservableCollection<GammaValueModel>();
+ }
+ public void AddGammaValue(double doseDifference)
+ {
+     GammaValueModel gammaValues = new GammaValueModel();
+     gammaValues.DD = $"{doseDifference}%";
+     for (int dta = 1; dta <= 4; dta++)
+     {
+         var analysis =PDAnalysisService.CreateAnalysis(_roi, 
+             doseDifference / 100.0, (double)dta);
+         switch (dta)
+         {
+             case 1:
+                 gammaValues.DTA1 = analysis.EvaluationTests.First().TestValue * 100.0;
+                 break;
+             case 2:
+                 gammaValues.DTA2 = analysis.EvaluationTests.First().TestValue * 100.0;
+                 break;
+             case 3:
+                 gammaValues.DTA3 = analysis.EvaluationTests.First().TestValue * 100.0;
+                 break;
+             case 4:
+                 gammaValues.DTA4 = analysis.EvaluationTests.First().TestValue * 100.0;
+                 break;
+         }
+     }
+     GammaValues.Add(gammaValues);
+ }
